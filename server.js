@@ -5,8 +5,8 @@ LolApi.init('764e1cc7-f55d-4d21-8d6e-48c343392844', 'na');
 var dict = {};
 var kdas = [];
 var names = {};
-function first(){
-LolApi.Stats.getRanked("22359069",'na').then(function(ranked)
+
+LolApi.Stats.getRanked("22359069",'na', function(err, ranked)
 {
     
     console.log(":::::::::::RANKED::::::::::");
@@ -20,53 +20,33 @@ LolApi.Stats.getRanked("22359069",'na').then(function(ranked)
             kdas[i] = kda; // store kda's into array
             dict[kda] = current; // store data of champion into a dictionary 
         }
-    }        
-}).then(function()
-{
-     kdas.sort().reverse();
-        console.log(kdas);
-        if(kdas.length > 5)
+    }
+    kdas.sort().reverse();
+    console.log(kdas);
+    if(kdas.length > 5)
+    {
+        for(i = 0; i < 5; i++)
         {
-            for(i = 0; i < 5; i++)
-            {
-                console.log(dict[kdas[i]].id);
-                //console.log(getChampID(dict[kdas[i]].id));
-            }
+            console.log(dict[kdas[i]].id);
+            getChampID(dict[kdas[i]].id);
         }
-    return;
+    }
+
+        
 });
-}
-function readNames()
-{
-    console.log(names.length);
-}
 
 function getChampID(id)
 {
     var name;
-    LolApi.Static.getChampionById(id, 'na').then(function(champs)
+    LolApi.Static.getChampionById(id, 'na', function(err, champs)
     {
         var champName = JSON.parse(JSON.stringify(champs));
         name = champName.name;
         names[id] = name;
-        //console.log(name);
-    }).then(function()
-    {
-        return name;
+        console.log(name);
     });
-    
+    return name;
 };
-if(kdas.length > 5)
-{
-    for(i = 0; i < 5; i++)
-    {
-        console.log(names[dict[kdas[i]].id]);
-
-    }
-}
-first().then(readNames());
-console.log("hi");
-readNames();
 //LolApi.getMatchHistory("22359069", 'RANKED_SOLO_5X5, SEASON2016','na', function(err, history)
 //{tl2011a  
 //    var temp = [];
